@@ -1,19 +1,15 @@
 version: "3.4"
 
 services:
-  mysql:
-    image: mysql:8.1
-    platform: linux/x86_64
-    restart: unless-stopped
+  postgres:
+    image: postgres
+    restart: always
     ports:
-      - 3307:3306
+      - 5432:5432
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      POSTGRES_PASSWORD: 12345
     volumes:
-      - mysql:/var/lib/mysql
+      - postgres:/var/lib/postgresql/data
 
 volumes:
-  mysql:
-    driver_opts:
-      type: tmpfs
-      device: tmpfs
+  postgres:
