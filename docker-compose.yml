@@ -8,8 +8,36 @@ services:
       - 5432:5432
     environment:
       POSTGRES_PASSWORD: 12345
+    networks:
+      - mikro-network
     volumes:
       - postgres:/var/lib/postgresql/data
+  
+  dera_dev:
+    container_name: dera_dev
+    image:  mikro:1.0
+    build:
+      context: .
+      target: production
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+    networks:
+      - mikro-network
+    environment:
+      STOCK_KEY: EBMHKT01GGGA2DTP
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DATABASE_NAME: mikro
+      POSTGRES_DEBUG: 'true'
+      EXPORT_PORT: 3000
+    restart: unless-stopped
 
 volumes:
   postgres:
+networks:
+  mikro-network:

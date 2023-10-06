@@ -7,17 +7,16 @@ import { EntityGenerator } from '@mikro-orm/entity-generator';
 import { SeedManager } from '@mikro-orm/seeder';
 
 export default defineConfig({
-  host: 'localhost',
-  port: 5432,
-  user: 'postgres',
-  password: '12345',
-  dbName: 'mikro',
+  host: process.env.POSTGRES_HOST,
+  port: +(process.env.POSTGRES_PORT || '5432'),
+  user: process.env.POSTGRES_USER,
+  password: process.env.POSTGRES_PASSWORD,
+  dbName: process.env.POSTGRES_DATABASE_NAME,
   entities: ['dist/**/*.entity.js'],
   entitiesTs: ['src/**/*.entity.ts'],
-  debug: true,
+  debug: Boolean(process.env.POSTGRES_DEBUG),
   loadStrategy: LoadStrategy.JOINED,
   highlighter: new SqlHighlighter(),
   metadataProvider: TsMorphMetadataProvider,
-  // registerRequestContext: false,
   extensions: [Migrator, EntityGenerator, SeedManager],
 });
